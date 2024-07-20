@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.prettierrc
+.eslintrc.cjs
+.editorconfig
+vite-env.d.ts
+package-lock.json
+package.json
+tsconfig.node.json
+tsconfig.json
+vite.config.ts
+README.md
