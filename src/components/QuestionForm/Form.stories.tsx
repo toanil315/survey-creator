@@ -53,6 +53,7 @@ export const Primary: Story = {
           }}
           onSubmit={form.handleSubmit(onSubmit)}
           noValidate
+          formId='1'
         >
           <QuestionForm.Input
             label='Label'

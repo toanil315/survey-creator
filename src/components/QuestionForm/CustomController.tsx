@@ -1,11 +1,9 @@
 import { useRef } from 'react';
 import { Controller, ControllerProps } from 'react-hook-form';
+import { useQuestionFormContext } from './QuestionFormContext';
 
-interface Props extends ControllerProps {
-  formId?: string;
-}
-
-export const CustomController = ({ formId, ...restProps }: Props) => {
+export const CustomController = (props: ControllerProps) => {
+  const { formId } = useQuestionFormContext();
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const debounceSubmitForm = () => {
@@ -22,9 +20,9 @@ export const CustomController = ({ formId, ...restProps }: Props) => {
 
   return (
     <Controller
-      {...restProps}
+      {...props}
       render={({ field, ...restRenderProps }) => {
-        return restProps.render({
+        return props.render({
           field: {
             ...field,
             onChange: (...event: any[]) => {

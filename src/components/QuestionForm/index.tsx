@@ -3,10 +3,11 @@ import { DetailedHTMLProps, FormHTMLAttributes, useEffect } from 'react';
 import Input from './Input';
 import Switch from './Switch';
 import Select from './Select';
+import { QuestionFormProvider } from './QuestionFormContext';
 
 interface QuestionFormProps
   extends DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> {
-  formId?: string;
+  formId: string;
 }
 
 export const QuestionForm = ({ children, formId, ...restProps }: QuestionFormProps) => {
@@ -25,12 +26,14 @@ export const QuestionForm = ({ children, formId, ...restProps }: QuestionFormPro
   }, [restProps.onSubmit, formId]);
 
   return (
-    <form
-      {...restProps}
-      noValidate
-    >
-      {children}
-    </form>
+    <QuestionFormProvider formId={formId}>
+      <form
+        {...restProps}
+        noValidate
+      >
+        {children}
+      </form>
+    </QuestionFormProvider>
   );
 };
 QuestionForm.Input = Input;
