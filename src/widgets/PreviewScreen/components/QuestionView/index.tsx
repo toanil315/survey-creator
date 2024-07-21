@@ -1,42 +1,30 @@
-import { Button, Form } from '@/components';
+import { Button, CompleteSurveyIcon, Form } from '@/components';
 import { QUESTION_TYPE_ENUM } from '@/constants';
-import { Question, QuestionSchema } from '@/entities/question';
+import { Question, QuestionAnswerSchema } from '@/entities/question';
 import { useSurvey } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { z } from 'zod';
-import { useQuestionViewContainerBaseClassName } from './style';
-import { ProgressBar } from '@fluentui/react-components';
+import { useQuestionViewContainerBaseClassName, useQuestionViewContainerClassNames } from './style';
+import { ProgressBar, mergeClasses, tokens } from '@fluentui/react-components';
 
 export const QuestionView = () => {
   const questionViewContainerBaseClassName = useQuestionViewContainerBaseClassName();
+  const questionViewContainerClassNames = useQuestionViewContainerClassNames();
 
   const { questions, currentQuestion, onNext, onBack } = useSurvey();
-  const { t } = useTranslation();
+  const shouldShowBackButton =
+    currentQuestion.type !== QUESTION_TYPE_ENUM.WELCOME_SCREEN &&
+    currentQuestion.type !== QUESTION_TYPE_ENUM.THANK_YOU_SCREEN;
+  const shouldNextBackButton = currentQuestion.type !== QUESTION_TYPE_ENUM.THANK_YOU_SCREEN;
+  const isCompleted = currentQuestion.type === QUESTION_TYPE_ENUM.THANK_YOU_SCREEN;
 
   const form = useForm({
     defaultValues: {
       question: currentQuestion,
       answer: '' as string | string[],
     },
-    resolver: zodResolver(
-      z
-        .object({
-          question: QuestionSchema,
-          answer: z.union([z.string(), z.array(z.string())]).optional(),
-        })
-        .superRefine(({ question, answer }, ctx) => {
-          if (question.required && !answer) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: t('errors.required'),
-              path: ['answer'],
-            });
-          }
-        }),
-    ),
+    resolver: zodResolver(QuestionAnswerSchema),
   });
 
   useEffect(() => {
@@ -47,29 +35,49 @@ export const QuestionView = () => {
   }, [currentQuestion]);
 
   return (
-    <div className={questionViewContainerBaseClassName}>
+    <div
+      className={mergeClasses(
+        questionViewContainerBaseClassName,
+        isCompleted && questionViewContainerClassNames.center,
+      )}
+    >
+      {isCompleted && (
+        <div className='completed-icon'>
+          <CompleteSurveyIcon
+            width={100}
+            height={100}
+            stroke={tokens.colorBrandBackground}
+          />
+          <div />
+        </div>
+      )}
       <h3 className='title'>
-        {currentQuestion.title} {currentQuestion.required && <span className='required'>*</span>}
+        {currentQuestion.title}{' '}
+        {currentQuestion.required && shouldNextBackButton && <span className='required'>*</span>}
       </h3>
       <p className='description'>{currentQuestion.description}</p>
       <FormProvider {...form}>
         <FormItemFactory question={currentQuestion} />
       </FormProvider>
       <div className='user-controls'>
-        <Button
-          onClick={onBack}
-          type='button'
-          appearance='outline'
-        >
-          Back
-        </Button>
-        <Button
-          onClick={form.handleSubmit(onNext)}
-          type='button'
-          appearance='primary'
-        >
-          Next
-        </Button>
+        {shouldShowBackButton && (
+          <Button
+            onClick={onBack}
+            type='button'
+            appearance='secondary'
+          >
+            Back
+          </Button>
+        )}
+        {shouldNextBackButton && (
+          <Button
+            onClick={form.handleSubmit(onNext)}
+            type='button'
+            appearance='primary'
+          >
+            Next
+          </Button>
+        )}
       </div>
       <div className='progress'>
         <p>
@@ -119,5 +127,8 @@ export const FormItemFactory = ({ question }: FormItemFactoryProps) => {
           direction='column'
         />
       );
+
+    default:
+      return null;
   }
 };

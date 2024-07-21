@@ -1,4 +1,4 @@
-import { makeResetStyles, shorthands, tokens } from '@fluentui/react-components';
+import { makeResetStyles, makeStyles, shorthands, tokens } from '@fluentui/react-components';
 
 export const useQuestionViewContainerBaseClassName = makeResetStyles({
   width: '420px',
@@ -36,6 +36,8 @@ export const useQuestionViewContainerBaseClassName = makeResetStyles({
   },
 
   '& > .progress': {
+    width: '100%',
+
     marginTop: tokens.spacingVerticalL,
 
     color: tokens.colorNeutralForeground4,
@@ -45,5 +47,25 @@ export const useQuestionViewContainerBaseClassName = makeResetStyles({
     flexFlow: 'column nowrap',
     alignItems: 'center',
     gap: tokens.spacingVerticalS,
+  },
+
+  '& > .completed-icon': {
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    alignItems: 'center',
+    gap: tokens.spacingVerticalSNudge,
+
+    '& > div': {
+      height: '4px',
+      width: '64px',
+      borderRadius: '100%',
+      backgroundColor: tokens.colorBrandBackground,
+    },
+  },
+});
+
+export const useQuestionViewContainerClassNames = makeStyles({
+  center: {
+    alignItems: 'center',
   },
 });

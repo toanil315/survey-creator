@@ -1,6 +1,7 @@
-import { makeResetStyles, tokens, shorthands } from '@fluentui/react-components';
+import { makeResetStyles, tokens, shorthands, makeStyles } from '@fluentui/react-components';
 
 export const useQuestionCardBaseClassName = makeResetStyles({
+  flexShrink: 0,
   width: '100%',
   display: 'flex',
   flexFlow: 'row nowrap',
@@ -12,8 +13,18 @@ export const useQuestionCardBaseClassName = makeResetStyles({
 
 export const useQuestionOrderBaseClassName = makeResetStyles({
   ...shorthands.padding(tokens.spacingVerticalM, tokens.spacingHorizontalM),
-  backgroundColor: tokens.colorBrandBackground,
+  backgroundColor: tokens.colorNeutralForeground4,
   color: tokens.colorNeutralBackground1,
+  ...shorthands.borderRight('1px', 'solid', tokens.colorNeutralBackground1Hover),
+});
+
+export const useQuestionOrderClassNames = makeStyles({
+  white: {
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  gray: {
+    backgroundColor: tokens.colorNeutralForeground4,
+  },
 });
 
 export const useQuestionFormContainerBaseClassName = makeResetStyles({

@@ -1,14 +1,14 @@
-import { LOGIC_CONDITION_ENUM } from '@/constants';
-import { QuestionLogic } from '@/entities/question';
+import { LOGIC_CONDITION_ENUM, QUESTION_TYPE_ENUM } from '@/constants';
+import { Question, QuestionLogic } from '@/entities/question';
 
 export class SurveyUtils {
-  static evaluateCondition(logic: QuestionLogic, responseValue: string | string[]): boolean {
+  static evaluateCondition(logic: QuestionLogic, responseValue?: string | string[]): boolean {
     switch (logic.condition) {
       case LOGIC_CONDITION_ENUM.IS_SUBMITTED:
         return Array.isArray(responseValue) ? responseValue.length > 0 : responseValue !== '';
 
       case LOGIC_CONDITION_ENUM.EQUALS:
-        return responseValue.toString() === logic.value;
+        return responseValue?.toString() === logic.value;
 
       case LOGIC_CONDITION_ENUM.DOES_NOT_EQUAL:
         return responseValue !== logic.value;
@@ -28,6 +28,80 @@ export class SurveyUtils {
 
       default:
         return false;
+    }
+  }
+
+  static getDefaultQuestionData(questionType: QUESTION_TYPE_ENUM): Partial<Question> {
+    switch (questionType) {
+      case QUESTION_TYPE_ENUM.FREE_TEXT:
+        return {
+          type: QUESTION_TYPE_ENUM.FREE_TEXT,
+          title: 'Who let the dogs out?',
+          description: 'Who? Who? Who?',
+          placeholder: 'Type your answer here',
+          required: false,
+          optionsOrder: undefined,
+          multiple: false,
+          isLongText: true,
+          backButtonLabel: 'Back',
+          nextButtonLabel: 'Next',
+          logics: [],
+          options: [],
+        };
+
+      case QUESTION_TYPE_ENUM.MULTIPLE_SELECT:
+        return {
+          id: String(Date.now()),
+          order: 1,
+          type: QUESTION_TYPE_ENUM.MULTIPLE_SELECT,
+          title: "What's important on vacay?",
+          description: 'Question Description',
+          required: false,
+          optionsOrder: undefined,
+          multiple: true,
+          isLongText: false,
+          backButtonLabel: 'Back',
+          nextButtonLabel: 'Next',
+          logics: [],
+          options: [
+            { value: 'Sun ☀️', isOther: false },
+            { value: 'Ocean 🌊', isOther: false },
+            { value: 'Palms 🌴', isOther: false },
+          ],
+        };
+
+      case QUESTION_TYPE_ENUM.SINGLE_SELECT:
+        return {
+          type: QUESTION_TYPE_ENUM.SINGLE_SELECT,
+          title: 'What do you do?',
+          description: "Can't do both.",
+          required: false,
+          optionsOrder: undefined,
+          multiple: false,
+          isLongText: false,
+          backButtonLabel: 'Back',
+          nextButtonLabel: 'Next',
+          logics: [],
+          options: [
+            { value: 'Eat the cake 🍰', isOther: false },
+            { value: 'Have the cake 🎂', isOther: false },
+          ],
+        };
+
+      default:
+        return {
+          type: QUESTION_TYPE_ENUM.FREE_TEXT,
+          title: 'Who let the dogs out?',
+          description: 'Who? Who? Who?',
+          required: false,
+          optionsOrder: undefined,
+          multiple: false,
+          isLongText: true,
+          backButtonLabel: 'Back',
+          nextButtonLabel: 'Next',
+          logics: [],
+          options: [],
+        };
     }
   }
 }

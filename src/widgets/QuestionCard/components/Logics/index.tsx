@@ -9,11 +9,7 @@ import {
   SquareArrowIcon,
   TrashIcon,
 } from '@/components';
-import {
-  LOGICS_BELONG_TO_QUESTION_TYPE,
-  LOGIC_CONDITION_ENUM,
-  QUESTION_TYPE_ENUM,
-} from '@/constants';
+import { LOGICS_BELONG_TO_QUESTION_TYPE, LOGIC_CONDITION_ENUM } from '@/constants';
 import { StringUtils } from '@/utils';
 import { useQuestionFormContainerBaseClassName } from '@/widgets/QuestionCard/style';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -25,6 +21,7 @@ import {
 } from './style';
 import { Tooltip } from '@fluentui/react-components';
 import { QuestionOption } from '@/entities/question';
+import { useSurvey } from '@/hooks';
 
 export const QuestionLogicJump = () => {
   const titleBaseClassName = useTitleBaseClassName();
@@ -33,6 +30,7 @@ export const QuestionLogicJump = () => {
   const questionLogicContainerBaseClassName = useQuestionLogicContainerBaseClassName();
   const removeButtonBaseClassName = useRemoveButtonBaseClassName();
 
+  const { questions, currentQuestion } = useSurvey();
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     name: 'logics',
@@ -90,7 +88,7 @@ export const QuestionLogicJump = () => {
                       placeholder='Select conditions'
                       name={`logics.${index}.condition`}
                       options={LOGICS_BELONG_TO_QUESTION_TYPE[
-                        watch('type') as QUESTION_TYPE_ENUM
+                        watch('type') as keyof typeof LOGICS_BELONG_TO_QUESTION_TYPE
                       ].map((value) => {
                         return {
                           label: StringUtils.convertToLabel(value),
@@ -119,16 +117,13 @@ export const QuestionLogicJump = () => {
                       size='small'
                       placeholder='Select question'
                       name={`logics.${index}.to`}
-                      options={[
-                        {
-                          label: 'Question 1',
-                          value: 'Question 1',
-                        },
-                        {
-                          label: 'Question 2',
-                          value: 'Question 2',
-                        },
-                      ]}
+                      options={questions
+                        .filter((q) => q.id !== currentQuestion.id)
+                        .slice(1, questions.length - 1)
+                        .map((q) => ({
+                          label: q.title,
+                          value: q.id,
+                        }))}
                     />
                     <div
                       className={removeButtonBaseClassName}

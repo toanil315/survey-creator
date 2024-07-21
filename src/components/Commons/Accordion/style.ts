@@ -11,7 +11,7 @@ export const useAccordionBaseStyles = makeResetStyles({
   [`& .${accordionHeaderClassNames.button}`]: {
     minHeight: 0,
     ...shorthands.padding(tokens.spacingVerticalM, tokens.spacingHorizontalXL),
-    backgroundColor: tokens.colorNeutralBackground3,
+    backgroundColor: tokens.colorNeutralBackground1,
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row-reverse',
@@ -19,7 +19,7 @@ export const useAccordionBaseStyles = makeResetStyles({
     alignItems: 'center',
 
     ':hover': {
-      backgroundColor: tokens.colorNeutralBackground3Hover,
+      backgroundColor: tokens.colorNeutralBackground1Hover,
     },
 
     '& div': {

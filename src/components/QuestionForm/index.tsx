@@ -1,9 +1,10 @@
 import { DetailedHTMLProps, FormHTMLAttributes, useEffect } from 'react';
+import { QuestionFormProvider } from './QuestionFormContext';
 
 import Input from './Input';
 import Switch from './Switch';
 import Select from './Select';
-import { QuestionFormProvider } from './QuestionFormContext';
+import Textarea from './Textarea';
 
 interface QuestionFormProps
   extends DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> {
@@ -39,3 +40,4 @@ export const QuestionForm = ({ children, formId, ...restProps }: QuestionFormPro
 QuestionForm.Input = Input;
 QuestionForm.Switch = Switch;
 QuestionForm.Select = Select;
+QuestionForm.Textarea = Textarea;

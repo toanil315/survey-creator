@@ -79,6 +79,29 @@ export const QuestionSchema = z.object({
   logics: z.array(QuestionLogicSchema).default([]),
 });
 
+export const QuestionAnswerSchema = z
+  .object({
+    question: QuestionSchema,
+    answer: z.union([z.string(), z.array(z.string())]).optional(),
+  })
+  .superRefine(({ question, answer }, ctx) => {
+    if (
+      question.type === QUESTION_TYPE_ENUM.WELCOME_SCREEN ||
+      question.type === QUESTION_TYPE_ENUM.THANK_YOU_SCREEN
+    ) {
+      return;
+    }
+
+    if (question.required && (!answer || !answer.length)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: i18next.t('errors.required'),
+        path: ['answer'],
+      });
+    }
+  });
+
 export type QuestionLogic = z.infer<typeof QuestionLogicSchema>;
 export type QuestionOption = z.infer<typeof QuestionOptionSchema>;
 export type Question = z.infer<typeof QuestionSchema>;
+export type QuestionAnswer = z.infer<typeof QuestionAnswerSchema>;

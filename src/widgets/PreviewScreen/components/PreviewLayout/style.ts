@@ -6,7 +6,6 @@ export const usePreviewLayoutBaseClassName = makeResetStyles({
   height: '100%',
   borderRadius: tokens.borderRadiusMedium,
   ...shorthands.border('1px', 'solid', tokens.colorNeutralBackground1),
-  ...shorthands.margin(tokens.spacingVerticalL, tokens.spacingHorizontalL),
   boxShadow: tokens.shadow8,
   overflow: 'hidden',
 
@@ -57,4 +56,15 @@ export const useDotClassNames = makeStyles({
   green: {
     backgroundColor: tokens.colorPaletteGreenBackground3,
   },
+});
+
+export const useRestartButtonBaseClassName = makeResetStyles({
+  display: 'flex',
+  flexFlow: 'row nowrap',
+  gap: tokens.spacingHorizontalSNudge,
+  cursor: 'pointer',
+  backgroundColor: tokens.colorNeutralBackground1,
+  borderRadius: tokens.borderRadiusLarge,
+  ...shorthands.padding(tokens.spacingVerticalXXS, tokens.spacingHorizontalM),
+  ...shorthands.border('1px', 'solid', tokens.colorNeutralBackground1Pressed),
 });
