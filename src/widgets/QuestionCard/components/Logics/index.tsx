@@ -22,6 +22,7 @@ import {
 import { Tooltip } from '@fluentui/react-components';
 import { QuestionOption } from '@/entities/question';
 import { useSurvey } from '@/hooks';
+import { useQuestionFormContext } from '@/components/QuestionForm/QuestionFormContext';
 
 export const QuestionLogicJump = () => {
   const titleBaseClassName = useTitleBaseClassName();
@@ -31,6 +32,7 @@ export const QuestionLogicJump = () => {
   const removeButtonBaseClassName = useRemoveButtonBaseClassName();
 
   const { questions, currentQuestion } = useSurvey();
+  const { onSubmit } = useQuestionFormContext();
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     name: 'logics',
@@ -43,6 +45,11 @@ export const QuestionLogicJump = () => {
       value: undefined,
       to: undefined,
     });
+  };
+
+  const handleRemoveLogic = (index: number) => {
+    remove(index);
+    onSubmit && onSubmit({} as any);
   };
 
   return (
@@ -127,7 +134,7 @@ export const QuestionLogicJump = () => {
                     />
                     <div
                       className={removeButtonBaseClassName}
-                      onClick={() => remove(index)}
+                      onClick={() => handleRemoveLogic(index)}
                     >
                       <TrashIcon />
                     </div>

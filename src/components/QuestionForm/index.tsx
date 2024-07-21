@@ -27,7 +27,10 @@ export const QuestionForm = ({ children, formId, ...restProps }: QuestionFormPro
   }, [restProps.onSubmit, formId]);
 
   return (
-    <QuestionFormProvider formId={formId}>
+    <QuestionFormProvider
+      formId={formId}
+      onSubmit={restProps.onSubmit}
+    >
       <form
         {...restProps}
         noValidate

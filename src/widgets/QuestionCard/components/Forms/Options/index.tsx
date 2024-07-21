@@ -4,12 +4,14 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useAdditionalActionButtonBaseClassName, useOptionContainerBaseClassName } from '../style';
 import { QUESTION_OPTION_ORDER_CONFIG_ENUM } from '@/constants';
 import { EnumUtils, StringUtils } from '@/utils';
+import { useQuestionFormContext } from '@/components/QuestionForm/QuestionFormContext';
 
 export const OptionsSection = () => {
   const additionalActionButtonBaseClassName = useAdditionalActionButtonBaseClassName();
   const optionContainerBaseClassName = useOptionContainerBaseClassName();
 
   const { control } = useFormContext();
+  const { onSubmit } = useQuestionFormContext();
   const { fields, insert, remove } = useFieldArray({
     name: 'options',
     control,
@@ -22,7 +24,10 @@ export const OptionsSection = () => {
     });
   };
 
-  console.log(fields);
+  const handleRemoveOption = (index: number) => {
+    remove(index);
+    onSubmit && onSubmit({} as any);
+  };
 
   return (
     <Field
@@ -54,7 +59,7 @@ export const OptionsSection = () => {
           </div>
           {index !== 0 && (
             <div
-              onClick={() => remove(index)}
+              onClick={() => handleRemoveOption(index)}
               className={additionalActionButtonBaseClassName}
             >
               <TrashIcon
