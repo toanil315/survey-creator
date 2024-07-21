@@ -1,5 +1,15 @@
 {
   "errors": {
     "required": "This field is required"
+  },
+  "components": {
+    "uploader": {
+      "chooseFile": "Choose files",
+      "browserFile": "Browse files",
+      "dropFile": "Drop your files here, or "
+    },
+    "table": {
+      "resultPerPage": "Results per page"
+    }
   }
 }
