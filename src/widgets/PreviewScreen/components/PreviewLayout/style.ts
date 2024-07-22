@@ -7,7 +7,6 @@ export const usePreviewLayoutBaseClassName = makeResetStyles({
   borderRadius: tokens.borderRadiusMedium,
   ...shorthands.border('1px', 'solid', tokens.colorNeutralBackground1),
   boxShadow: tokens.shadow8,
-  overflow: 'hidden',
 
   '& > .container': {
     flexGrow: 1,

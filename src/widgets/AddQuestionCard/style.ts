@@ -1,6 +1,7 @@
 import { makeResetStyles, tokens, shorthands } from '@fluentui/react-components';
 
 export const useQuestionCardBaseClassName = makeResetStyles({
+  flexShrink: 0,
   width: '100%',
   display: 'flex',
   flexFlow: 'row nowrap',
