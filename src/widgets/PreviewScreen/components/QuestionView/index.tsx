@@ -1,12 +1,17 @@
-import { Button, CompleteSurveyIcon, Form } from '@/components';
+import { Button, CompleteSurveyIcon, Form, UPLOADER_ENUM } from '@/components';
 import { QUESTION_TYPE_ENUM } from '@/constants';
-import { Question, QuestionAnswerSchema } from '@/entities/question';
+import { Question, QuestionAnswer, QuestionAnswerSchema } from '@/entities/question';
 import { useSurvey } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useQuestionViewContainerBaseClassName, useQuestionViewContainerClassNames } from './style';
+import {
+  useQuestionViewContainerBaseClassName,
+  useQuestionViewContainerClassNames,
+  useRatingContainerBaseClassName,
+} from './style';
 import { ProgressBar, mergeClasses, tokens } from '@fluentui/react-components';
+import { PictureSelections } from '../PictureSelectionItems';
 
 export const QuestionView = () => {
   const questionViewContainerBaseClassName = useQuestionViewContainerBaseClassName();
@@ -19,18 +24,32 @@ export const QuestionView = () => {
   const shouldNextBackButton = currentQuestion.type !== QUESTION_TYPE_ENUM.THANK_YOU_SCREEN;
   const isCompleted = currentQuestion.type === QUESTION_TYPE_ENUM.THANK_YOU_SCREEN;
 
-  const form = useForm({
+  const form = useForm<QuestionAnswer>({
     defaultValues: {
       question: currentQuestion,
-      answer: '' as string | string[],
+      answer: undefined,
     },
     resolver: zodResolver(QuestionAnswerSchema),
   });
 
   useEffect(() => {
+    let defaultAnswer = undefined;
+
+    switch (currentQuestion.type) {
+      case QUESTION_TYPE_ENUM.MULTIPLE_SELECT:
+      case QUESTION_TYPE_ENUM.FILE_UPLOAD:
+      case QUESTION_TYPE_ENUM.PICTURE_SELECTION:
+        defaultAnswer = [];
+        break;
+
+      default:
+        defaultAnswer = '';
+        break;
+    }
+
     form.reset({
       question: currentQuestion,
-      answer: currentQuestion.type === QUESTION_TYPE_ENUM.MULTIPLE_SELECT ? ([] as string[]) : '',
+      answer: defaultAnswer,
     });
   }, [currentQuestion]);
 
@@ -97,6 +116,8 @@ interface FormItemFactoryProps {
 }
 
 export const FormItemFactory = ({ question }: FormItemFactoryProps) => {
+  const ratingContainerBaseClassName = useRatingContainerBaseClassName();
+
   switch (question.type) {
     case QUESTION_TYPE_ENUM.FREE_TEXT:
       const props = {
@@ -113,6 +134,7 @@ export const FormItemFactory = ({ question }: FormItemFactoryProps) => {
             label: option.value,
             value: option.value,
           }))}
+          appearance='border'
         />
       );
 
@@ -125,7 +147,43 @@ export const FormItemFactory = ({ question }: FormItemFactoryProps) => {
             value: option.value,
           }))}
           direction='column'
+          appearance='border'
         />
+      );
+
+    case QUESTION_TYPE_ENUM.FILE_UPLOAD:
+      return (
+        <Form.FileUploader
+          name='answer'
+          componentType={UPLOADER_ENUM.DRAG_AND_DROP}
+          accept={question.limitFileTypes?.join(',')}
+          multiple={question.allowMultipleFiles}
+        />
+      );
+
+    case QUESTION_TYPE_ENUM.PICTURE_SELECTION:
+      return (
+        <PictureSelections
+          pictures={question.pictureSelectOptions || []}
+          allowMultipleSelect={Boolean(question.allowMultipleSelect)}
+          name='answer'
+        />
+      );
+
+    case QUESTION_TYPE_ENUM.RATING:
+      return (
+        <div className={ratingContainerBaseClassName}>
+          <Form.Rating
+            name='answer'
+            step={1}
+            max={question.range ? Number(question.range) : 5}
+            color='marigold'
+          />
+          <div className='rating-labels'>
+            <span>{question.lowerLabel}</span>
+            <span>{question.upperLabel}</span>
+          </div>
+        </div>
       );
 
     default:

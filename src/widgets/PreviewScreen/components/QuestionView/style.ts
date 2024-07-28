@@ -69,3 +69,20 @@ export const useQuestionViewContainerClassNames = makeStyles({
     alignItems: 'center',
   },
 });
+
+export const useRatingContainerBaseClassName = makeResetStyles({
+  width: 'max-content',
+  ...shorthands.margin('0px', 'auto'),
+
+  '& .rating-labels': {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    justifyContent: 'space-between',
+
+    fontSize: tokens.fontSizeBase200,
+    lineHeight: tokens.lineHeightBase200,
+    fontWeight: tokens.fontWeightMedium,
+
+    marginTop: tokens.spacingVerticalSNudge,
+  },
+});

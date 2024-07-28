@@ -19,7 +19,7 @@ export const useRadioGroupStyles = makeStyles({
       height: '16px',
     },
 
-    [`$ .${radioClassNames.label}`]: {
+    [`& .${radioClassNames.label}`]: {
       fontSize: tokens.fontSizeBase300,
       lineHeight: tokens.lineHeightBase300,
     },
@@ -30,7 +30,7 @@ export const useRadioGroupStyles = makeStyles({
       height: '18px',
     },
 
-    [`$ .${radioClassNames.label}`]: {
+    [`& .${radioClassNames.label}`]: {
       fontSize: tokens.fontSizeBase400,
       lineHeight: tokens.lineHeightBase400,
     },
@@ -46,6 +46,28 @@ export const useRadioGroupStyles = makeStyles({
       lineHeight: tokens.lineHeightBase400,
     },
   },
+  radioBorder: {
+    [`&.${radioClassNames.root}`]: {
+      width: '100%',
+      borderRadius: tokens.borderRadiusLarge,
+      ...shorthands.padding(tokens.spacingVerticalXS, tokens.spacingHorizontalM),
+      ...shorthands.border('1px', 'solid', tokens.colorNeutralBackground3Pressed),
+      marginBottom: tokens.spacingVerticalS,
+
+      [`:hover`]: {
+        backgroundColor: tokens.colorNeutralBackground1Hover,
+      },
+    },
+
+    [`& .${radioClassNames.label}`]: {
+      width: '100%',
+    },
+  },
+  radioBorderActive: {
+    [`&.${radioClassNames.root}`]: {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+    },
+  },
   error: {
     [`& .${radioClassNames.indicator}`]: {
       ...shorthands.borderColor(`${tokens.colorPaletteRedBackground3} !important`),
@@ -53,6 +75,10 @@ export const useRadioGroupStyles = makeStyles({
       ':after': {
         backgroundColor: `${tokens.colorPaletteRedBackground3} !important`,
       },
+    },
+
+    [`&.${radioClassNames.root}`]: {
+      ...shorthands.borderColor(`${tokens.colorPaletteRedBackground3} !important`),
     },
   },
 });

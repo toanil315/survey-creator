@@ -9,8 +9,11 @@ import {
   Accordion,
   FreeTextIcon,
   MultipleSelectIcon,
+  PictureSelectionIcon,
   PlusIcon,
+  RatingIcon,
   SingleSelectIcon,
+  UploadIcon,
 } from '@/components';
 import { QUESTION_TYPE_ENUM } from '@/constants';
 import { EnumUtils, StringUtils } from '@/utils';
@@ -40,6 +43,15 @@ export const AddQuestionCard = () => {
 
       case QUESTION_TYPE_ENUM.MULTIPLE_SELECT:
         return <MultipleSelectIcon {...props} />;
+
+      case QUESTION_TYPE_ENUM.FILE_UPLOAD:
+        return <UploadIcon {...props} />;
+
+      case QUESTION_TYPE_ENUM.PICTURE_SELECTION:
+        return <PictureSelectionIcon {...props} />;
+
+      case QUESTION_TYPE_ENUM.RATING:
+        return <RatingIcon {...props} />;
     }
   };
 

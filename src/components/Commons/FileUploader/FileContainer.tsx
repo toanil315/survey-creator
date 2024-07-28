@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { CloseIcon } from '@/components/Icons';
 import axios from 'axios';
-import { Spinner } from '@fluentui/react-components';
+import { Spinner, mergeClasses } from '@fluentui/react-components';
 import { FileContainerProps, FileItem } from './types';
 import { useFileContainerBaseStyles, useFileItemBaseStyles } from './style';
 
@@ -18,13 +18,18 @@ const FileContainer = ({ files, ...restProps }: FileContainerProps) => {
     ));
   };
 
-  return <div className={fileContainerBaseClassName}>{renderFileItem()}</div>;
+  return (
+    <div className={mergeClasses('files-container', fileContainerBaseClassName)}>
+      {renderFileItem()}
+    </div>
+  );
 };
 
 const FileItemEl = ({
   file,
   addFile,
   deleteFile,
+  renderItems,
 }: { file: FileItem } & Omit<FileContainerProps, 'files'>) => {
   const fileItemBaseClassName = useFileItemBaseStyles();
 
@@ -46,9 +51,18 @@ const FileItemEl = ({
     }
   }, [file]);
 
-  return (
+  return renderItems ? (
+    renderItems(file, deleteFile)
+  ) : (
     <div className={fileItemBaseClassName}>
-      <p className='name'>{file.name || file.url}</p>
+      <div className='file-preview'>
+        <a
+          href={file.url}
+          className='name'
+        >
+          {file.name || file.url}
+        </a>
+      </div>
       <div>
         {file.loading ? (
           <Spinner size='extra-tiny' />

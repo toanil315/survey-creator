@@ -7,3 +7,5 @@ export { default as SingleSelectIcon } from './SingleSelectIcon';
 export { default as MultipleSelectIcon } from './MultipleSelectIcon';
 export { default as CompleteSurveyIcon } from './CompleteSurveyIcon';
 export { default as RestartIcon } from './RestartIcon';
+export { default as PictureSelectionIcon } from './PictureSelectionIcon';
+export { default as RatingIcon } from './RatingIcon';

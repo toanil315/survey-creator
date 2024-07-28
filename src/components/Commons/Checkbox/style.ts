@@ -37,12 +37,38 @@ export const useCheckboxStyles = makeStyles({
       height: '20px',
     },
   },
+  checkboxBorder: {
+    [`&.${checkboxClassNames.root}`]: {
+      width: '100%',
+      borderRadius: tokens.borderRadiusLarge,
+      ...shorthands.padding(tokens.spacingVerticalXS, tokens.spacingHorizontalM),
+      ...shorthands.border('1px', 'solid', tokens.colorNeutralBackground3Pressed),
+      marginBottom: tokens.spacingVerticalS,
+
+      [`:hover`]: {
+        backgroundColor: tokens.colorNeutralBackground3Hover,
+      },
+    },
+
+    [`& .${checkboxClassNames.label}`]: {
+      width: '100%',
+    },
+  },
+  checkboxBorderActive: {
+    [`&.${checkboxClassNames.root}`]: {
+      backgroundColor: tokens.colorNeutralBackground3Hover,
+    },
+  },
   error: {
     [`& .${checkboxClassNames.indicator}`]: {
       ...shorthands.borderColor(`${tokens.colorPaletteRedBackground3} !important`),
       ':has(svg)': {
         backgroundColor: `${tokens.colorPaletteRedBackground3} !important`,
       },
+    },
+
+    [`&.${checkboxClassNames.root}`]: {
+      ...shorthands.borderColor(`${tokens.colorPaletteRedBackground3} !important`),
     },
   },
 });

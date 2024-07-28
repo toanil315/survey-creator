@@ -53,8 +53,6 @@ export const Slider = ({
     }, {});
   }, [milestone]);
 
-  console.log(masks);
-
   return (
     <Field
       label={label}

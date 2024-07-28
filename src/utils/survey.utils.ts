@@ -11,7 +11,7 @@ export class SurveyUtils {
         return responseValue?.toString() === logic.value;
 
       case LOGIC_CONDITION_ENUM.DOES_NOT_EQUAL:
-        return responseValue !== logic.value;
+        return responseValue?.toString() !== logic.value;
 
       case LOGIC_CONDITION_ENUM.INCLUDES_ALL_OF:
         return (
@@ -25,6 +25,18 @@ export class SurveyUtils {
         return Array.isArray(responseValue)
           ? logic.value.some((v) => responseValue.includes(v))
           : typeof responseValue === 'string' && logic.value.includes(responseValue);
+
+      case LOGIC_CONDITION_ENUM.IS_LESS_THAN:
+        return Number(responseValue) < Number(logic.value);
+
+      case LOGIC_CONDITION_ENUM.IS_LESS_THAN_OR_EQUAL:
+        return Number(responseValue) <= Number(logic.value);
+
+      case LOGIC_CONDITION_ENUM.IS_GREATER_THAN:
+        return Number(responseValue) > Number(logic.value);
+
+      case LOGIC_CONDITION_ENUM.IS_GREATER_THAN_OR_EQUAL:
+        return Number(responseValue) >= Number(logic.value);
 
       default:
         return false;
@@ -86,6 +98,67 @@ export class SurveyUtils {
             { value: 'Eat the cake 🍰', isOther: false },
             { value: 'Have the cake 🎂', isOther: false },
           ],
+        };
+
+      case QUESTION_TYPE_ENUM.FILE_UPLOAD:
+        return {
+          type: QUESTION_TYPE_ENUM.FILE_UPLOAD,
+          title: 'File Upload',
+          description: 'Upload your file here.',
+          required: false,
+          allowMultipleFiles: false,
+          limitFileTypes: [],
+          logics: [],
+          options: [],
+        };
+
+      case QUESTION_TYPE_ENUM.PICTURE_SELECTION:
+        return {
+          type: QUESTION_TYPE_ENUM.PICTURE_SELECTION,
+          title: 'Which is the cutest puppy?',
+          description: 'You can also pick both.',
+          required: false,
+          allowMultipleSelect: true,
+          pictureSelectOptions: [
+            'https://formbricks-cdn.s3.eu-central-1.amazonaws.com/puppy-1-small.jpg',
+            'https://formbricks-cdn.s3.eu-central-1.amazonaws.com/puppy-2-small.jpg',
+          ],
+          logics: [],
+          options: [],
+        };
+
+      case QUESTION_TYPE_ENUM.RATING:
+        return {
+          type: QUESTION_TYPE_ENUM.RATING,
+          title: 'How would you rate My Product?',
+          description: "Don't worry, be honest.",
+          required: false,
+          logics: [],
+          options: [
+            {
+              value: '1',
+              isOther: false,
+            },
+            {
+              value: '2',
+              isOther: false,
+            },
+            {
+              value: '3',
+              isOther: false,
+            },
+            {
+              value: '4',
+              isOther: false,
+            },
+            {
+              value: '5',
+              isOther: false,
+            },
+          ],
+          range: '5',
+          lowerLabel: 'Not Good',
+          upperLabel: 'Very Good',
         };
 
       default:

@@ -5,6 +5,7 @@ import Input from './Input';
 import Switch from './Switch';
 import Select from './Select';
 import Textarea from './Textarea';
+import FileUploader from './FileUploader';
 
 interface QuestionFormProps
   extends DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> {
@@ -44,3 +45,4 @@ QuestionForm.Input = Input;
 QuestionForm.Switch = Switch;
 QuestionForm.Select = Select;
 QuestionForm.Textarea = Textarea;
+QuestionForm.FileUploader = FileUploader;

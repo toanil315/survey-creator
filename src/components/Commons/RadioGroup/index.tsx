@@ -16,6 +16,7 @@ export const RadioGroup = ({
   label,
   required,
   error,
+  appearance = 'default',
   ...restProps
 }: RadioGroupProps) => {
   const radioGroupBaseClassName = useRadioGroupBaseStyles();
@@ -30,13 +31,15 @@ export const RadioGroup = ({
       <Radio
         key={item.value}
         value={item.value}
-        label={item.label}
+        label={item.render ? item.render(item) : item.label}
         checked={item.value === value}
         className={mergeClasses(
           radioGroupBaseClassName,
           size === 'small' && radioGroupClassNames.small,
           size === 'medium' && radioGroupClassNames.medium,
           size === 'large' && radioGroupClassNames.large,
+          appearance === 'border' && radioGroupClassNames.radioBorder,
+          value === item.value && appearance === 'border' && radioGroupClassNames.radioBorderActive,
           Boolean(error) && radioGroupClassNames.error,
         )}
       />

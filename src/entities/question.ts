@@ -26,7 +26,6 @@ export const QuestionLogicSchema = ZodUtils.zodAlwaysRefine(
 
     case LOGIC_CONDITION_ENUM.EQUALS:
     case LOGIC_CONDITION_ENUM.DOES_NOT_EQUAL: {
-      console.log(value);
       if (!value) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -77,6 +76,13 @@ export const QuestionSchema = z.object({
   backButtonLabel: z.string().optional(),
   nextButtonLabel: z.string().optional(),
   logics: z.array(QuestionLogicSchema).default([]),
+  allowMultipleFiles: z.boolean().optional(),
+  limitFileTypes: z.array(z.string()).optional(),
+  allowMultipleSelect: z.boolean().optional(),
+  pictureSelectOptions: z.array(z.string()).optional(),
+  range: z.string().optional(),
+  lowerLabel: z.string().optional(),
+  upperLabel: z.string().optional(),
 });
 
 export const QuestionAnswerSchema = z

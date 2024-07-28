@@ -62,6 +62,8 @@ export const SurveyProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleNext = (questionAnswer: QuestionAnswer) => {
+    console.log('questionAnswer', questionAnswer);
+
     const currentQuestionIndex = questions.findIndex(
       (question) => question.id === currentQuestionId,
     );

@@ -105,7 +105,9 @@ export const useDndFileStyles = makeStyles({
     },
   },
   error: {
-    ...shorthands.borderColor(`${tokens.colorPaletteRedBackground3} !important`),
+    '& .area': {
+      ...shorthands.borderColor(`${tokens.colorPaletteRedBackground3} !important`),
+    },
   },
 });
 
@@ -113,12 +115,11 @@ export const useFileContainerBaseStyles = makeResetStyles({
   width: '100%',
 
   display: 'flex',
-  flexFlow: 'column nowrap',
+  flexFlow: 'column',
   gap: tokens.spacingVerticalM,
 });
 
 export const useFileItemBaseStyles = makeResetStyles({
-  width: '100%',
   backgroundColor: tokens.colorNeutralBackground1,
 
   ...shorthands.padding(
@@ -135,7 +136,14 @@ export const useFileItemBaseStyles = makeResetStyles({
   alignItems: 'center',
   gap: tokens.spacingHorizontalXXXL,
 
+  '& .file-preview': {
+    width: '100%',
+    display: 'table',
+    tableLayout: 'fixed',
+  },
+
   '& .name': {
+    display: 'table-cell',
     fontSize: tokens.fontSizeBase300,
     lineHeight: tokens.lineHeightBase300,
     color: tokens.colorNeutralForeground1,

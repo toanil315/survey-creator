@@ -17,6 +17,7 @@ export const FileUploader = ({
   onChange,
   componentType = UPLOADER_ENUM.BROWSE_AREA,
   value,
+  renderItems,
   ...restProps
 }: FileUploaderProps) => {
   const wrapperBaseClassName = useWrapperBaseStyles();
@@ -31,7 +32,7 @@ export const FileUploader = ({
       setFiles((prev) => [...uploadedLinks, ...prev.filter((file) => !value.includes(file.url))]);
     }
 
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && value) {
       const uploadedLink = { url: value, loading: false };
       setFiles([uploadedLink]);
     }
@@ -84,6 +85,7 @@ export const FileUploader = ({
             files={files}
             addFile={addFile}
             deleteFile={deleteFile}
+            renderItems={renderItems}
           />
         </div>
       </div>

@@ -11,6 +11,7 @@ import TagPicker from './TagPicker';
 import Slider from './Slider';
 import FileUploader from './FileUploader';
 import CheckboxGroup from './CheckBoxGroup';
+import Rating from './Rating';
 
 export const Form = ({
   children,
@@ -36,3 +37,4 @@ Form.TagPicker = TagPicker;
 Form.Slider = Slider;
 Form.FileUploader = FileUploader;
 Form.CheckboxGroup = CheckboxGroup;
+Form.Rating = Rating;

@@ -5,11 +5,13 @@ export type CheckboxSize = 'small' | 'medium' | 'large';
 export interface CheckboxProps extends Omit<FuiCheckboxProps, 'size'> {
   size?: CheckboxSize;
   error?: string;
+  appearance?: 'default' | 'border';
 }
 
 export interface CheckboxGroupItem {
   value: string;
   label: string;
+  render?: (item: CheckboxGroupItem) => FuiCheckboxProps['label'];
 }
 
 export interface CheckboxGroupProps {
@@ -21,4 +23,5 @@ export interface CheckboxGroupProps {
   required?: boolean;
   direction?: 'row' | 'column';
   error?: string;
+  appearance?: 'default' | 'border';
 }

@@ -32,12 +32,14 @@ export interface FileUploaderProps extends UploadConfig {
   onChange?: (value: string | string[] | undefined, action?: ACTION_ENUM) => void;
   value?: string | string[];
   multiple?: boolean;
+  renderItems?: (item: FileItem, deleteItem: (fileLink: string) => void) => React.ReactNode;
 }
 
 export interface FileContainerProps {
   files: FileItem[];
   addFile: (fileLink: string, file: FileItem) => void;
   deleteFile: (fileLink: string) => void;
+  renderItems?: (item: FileItem, deleteItem: (fileLink: string) => void) => React.ReactNode;
 }
 
 export interface DndFileProps extends UploadConfig {

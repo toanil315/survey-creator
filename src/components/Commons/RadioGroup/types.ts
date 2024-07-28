@@ -1,10 +1,11 @@
-import { RadioGroupProps as FuiRadioGroupProps } from '@fluentui/react-components';
+import { RadioGroupProps as FuiRadioGroupProps, RadioProps } from '@fluentui/react-components';
 
 export type RadioSize = 'small' | 'medium' | 'large';
 
 export interface RadioGroupItem {
   value: string;
   label: string;
+  render?: (item: RadioGroupItem) => RadioProps['label'];
 }
 
 export interface RadioGroupProps extends Omit<FuiRadioGroupProps, 'value' | 'onChange'> {
@@ -15,4 +16,5 @@ export interface RadioGroupProps extends Omit<FuiRadioGroupProps, 'value' | 'onC
   label?: string;
   required?: boolean;
   error?: string;
+  appearance?: 'default' | 'border';
 }

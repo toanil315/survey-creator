@@ -50,6 +50,7 @@ export const Primary: Story = {
               value: '3',
             },
           ]}
+          appearance='border'
         />
       </div>
     );

@@ -17,6 +17,9 @@ import { MutipleSelectForm } from './components/Forms/MultipleSelectForm';
 import { WelcomeForm } from './components/Forms/WelcomeForm';
 import { useSurvey } from '@/hooks';
 import { mergeClasses } from '@fluentui/react-components';
+import { FileUploadForm } from './components/Forms/FileUploadForm';
+import { PictureSelectionForm } from './components/Forms/PictureSelectionForm';
+import { RatingForm } from './components/Forms/RatingForm';
 
 export const QuestionCard = memo(
   ({ question }: QuestionCardProps) => {
@@ -120,6 +123,18 @@ export const QuestionFormFactory = ({ question }: QuestionCardProps) => {
 
     case QUESTION_TYPE_ENUM.MULTIPLE_SELECT: {
       return <MutipleSelectForm />;
+    }
+
+    case QUESTION_TYPE_ENUM.FILE_UPLOAD: {
+      return <FileUploadForm />;
+    }
+
+    case QUESTION_TYPE_ENUM.PICTURE_SELECTION: {
+      return <PictureSelectionForm />;
+    }
+
+    case QUESTION_TYPE_ENUM.RATING: {
+      return <RatingForm />;
     }
   }
 };

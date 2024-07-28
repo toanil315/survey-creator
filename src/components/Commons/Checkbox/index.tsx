@@ -3,7 +3,12 @@ import { useCheckboxBaseStyles, useCheckboxGroupStyles, useCheckboxStyles } from
 import { CheckboxGroupProps, CheckboxProps } from './types';
 import { Fragment, useEffect, useState } from 'react';
 
-export const Checkbox = ({ size = 'medium', error, ...restProps }: CheckboxProps) => {
+export const Checkbox = ({
+  size = 'medium',
+  error,
+  appearance = 'default',
+  ...restProps
+}: CheckboxProps) => {
   const checkboxBaseClassName = useCheckboxBaseStyles();
   const checkboxClassNames = useCheckboxStyles();
 
@@ -22,6 +27,8 @@ export const Checkbox = ({ size = 'medium', error, ...restProps }: CheckboxProps
           size === 'small' && checkboxClassNames.checkboxSmall,
           size === 'medium' && checkboxClassNames.checkboxMedium,
           size === 'large' && checkboxClassNames.checkboxLarge,
+          appearance === 'border' && checkboxClassNames.checkboxBorder,
+          restProps.checked && appearance === 'border' && checkboxClassNames.checkboxBorderActive,
           Boolean(error) && checkboxClassNames.error,
         )}
         {...restProps}
@@ -39,6 +46,7 @@ Checkbox.Group = ({
   label,
   required,
   error,
+  ...restProps
 }: CheckboxGroupProps) => {
   const checkboxGroupClassNames = useCheckboxGroupStyles();
   const [internalValues, setInternalValues] = useState<Set<string>>(new Set(value || []));
@@ -62,11 +70,12 @@ Checkbox.Group = ({
       return (
         <Fragment key={item.value}>
           <Checkbox
-            label={item.label}
+            label={item.render ? item.render(item) : item.label}
             size={size}
             checked={internalValues.has(item.value)}
             onChange={() => handleChange(item.value)}
             error={error ? ' ' : ''}
+            {...restProps}
           />
         </Fragment>
       );
