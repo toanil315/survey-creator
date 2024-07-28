@@ -52,7 +52,7 @@ const FileItemEl = ({
   }, [file]);
 
   return renderItems ? (
-    renderItems(file, deleteFile)
+    <>{renderItems(file, deleteFile)}</>
   ) : (
     <div className={fileItemBaseClassName}>
       <div className='file-preview'>
