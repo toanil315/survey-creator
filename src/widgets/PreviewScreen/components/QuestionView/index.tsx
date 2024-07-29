@@ -64,6 +64,13 @@ export const QuestionView = () => {
     });
   }, [currentQuestion]);
 
+  const onSubmit = (data: QuestionAnswer) => {
+    form.reset({
+      answer: undefined,
+    });
+    onNext(data);
+  };
+
   return (
     <div
       className={mergeClasses(
@@ -101,7 +108,7 @@ export const QuestionView = () => {
         )}
         {shouldNextBackButton && (
           <Button
-            onClick={form.handleSubmit(onNext)}
+            onClick={form.handleSubmit(onSubmit)}
             type='button'
             appearance='primary'
           >
