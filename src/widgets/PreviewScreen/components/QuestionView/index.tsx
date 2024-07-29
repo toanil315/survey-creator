@@ -12,6 +12,7 @@ import {
 } from './style';
 import { ProgressBar, mergeClasses, tokens } from '@fluentui/react-components';
 import { PictureSelections } from '../PictureSelectionItems';
+import { MatrixQuestionView } from '../MatrixQuestionView';
 
 export const QuestionView = () => {
   const questionViewContainerBaseClassName = useQuestionViewContainerBaseClassName();
@@ -40,6 +41,16 @@ export const QuestionView = () => {
       case QUESTION_TYPE_ENUM.FILE_UPLOAD:
       case QUESTION_TYPE_ENUM.PICTURE_SELECTION:
         defaultAnswer = [];
+        break;
+
+      case QUESTION_TYPE_ENUM.MATRIX:
+        defaultAnswer = currentQuestion.matrixRows?.reduce<Record<string, string | null>>(
+          (acc, row) => {
+            acc[row.value] = null;
+            return acc;
+          },
+          {},
+        );
         break;
 
       default:
@@ -184,6 +195,15 @@ export const FormItemFactory = ({ question }: FormItemFactoryProps) => {
             <span>{question.upperLabel}</span>
           </div>
         </div>
+      );
+
+    case QUESTION_TYPE_ENUM.MATRIX:
+      return (
+        <MatrixQuestionView
+          name='answer'
+          matrixRows={question.matrixRows || []}
+          matrixColumns={question.matrixColumns || []}
+        />
       );
 
     default:

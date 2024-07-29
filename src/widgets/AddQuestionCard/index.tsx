@@ -8,6 +8,7 @@ import {
 import {
   Accordion,
   FreeTextIcon,
+  MatrixIcon,
   MultipleSelectIcon,
   PictureSelectionIcon,
   PlusIcon,
@@ -52,6 +53,9 @@ export const AddQuestionCard = () => {
 
       case QUESTION_TYPE_ENUM.RATING:
         return <RatingIcon {...props} />;
+
+      case QUESTION_TYPE_ENUM.MATRIX:
+        return <MatrixIcon {...props} />;
     }
   };
 

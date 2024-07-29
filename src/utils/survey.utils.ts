@@ -1,8 +1,11 @@
 import { LOGIC_CONDITION_ENUM, QUESTION_TYPE_ENUM } from '@/constants';
-import { Question, QuestionLogic } from '@/entities/question';
+import { Question, QuestionAnswer, QuestionLogic } from '@/entities/question';
 
 export class SurveyUtils {
-  static evaluateCondition(logic: QuestionLogic, responseValue?: string | string[]): boolean {
+  static evaluateCondition(
+    logic: QuestionLogic,
+    responseValue?: QuestionAnswer['answer'],
+  ): boolean {
     switch (logic.condition) {
       case LOGIC_CONDITION_ENUM.IS_SUBMITTED:
         return Array.isArray(responseValue) ? responseValue.length > 0 : responseValue !== '';
@@ -37,6 +40,17 @@ export class SurveyUtils {
 
       case LOGIC_CONDITION_ENUM.IS_GREATER_THAN_OR_EQUAL:
         return Number(responseValue) >= Number(logic.value);
+
+      case LOGIC_CONDITION_ENUM.IS_COMPLETELY_SUBMITTED:
+        console.log(responseValue);
+        return Object.keys(responseValue || {}).every((key) =>
+          Boolean(responseValue?.[key as keyof typeof responseValue]),
+        );
+
+      case LOGIC_CONDITION_ENUM.IS_PARTIALLY_SUBMITTED:
+        return Object.keys(responseValue || {}).some((key) =>
+          Boolean(responseValue?.[key as keyof typeof responseValue]),
+        );
 
       default:
         return false;
@@ -159,6 +173,18 @@ export class SurveyUtils {
           range: '5',
           lowerLabel: 'Not Good',
           upperLabel: 'Very Good',
+        };
+
+      case QUESTION_TYPE_ENUM.MATRIX:
+        return {
+          type: QUESTION_TYPE_ENUM.MATRIX,
+          title: 'How much do you love these flowers?',
+          description: '0: Not at all, 3: Love it',
+          required: false,
+          matrixRows: [{ value: 'Rose 🌹' }, { value: 'Sunflower 🌻' }, { value: 'Hibiscus 🌺' }],
+          matrixColumns: [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }],
+          logics: [],
+          options: [],
         };
 
       default:

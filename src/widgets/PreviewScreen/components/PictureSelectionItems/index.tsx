@@ -18,7 +18,7 @@ export const PictureSelections = ({
   const pictureSelectionItemClassNames = usePictureSelectionItemClassNames();
 
   const form = useFormContext();
-  const value: string[] = form.watch(name) || [];
+  const value: string[] = Array.isArray(form.watch(name)) ? form.watch(name) : [];
   const error = form.formState.errors[name]?.message;
 
   const handleSelect = (picture: string) => {

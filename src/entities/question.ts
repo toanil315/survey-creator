@@ -57,6 +57,12 @@ export const QuestionOptionSchema = z.object({
   isOther: z.boolean().optional(),
 });
 
+export const QuestionMatrixGridSchema = z.object({
+  value: z
+    .string({ required_error: i18next.t('errors.required') })
+    .min(1, i18next.t('errors.required')),
+});
+
 export const QuestionSchema = z.object({
   id: z
     .string({ required_error: i18next.t('errors.required') })
@@ -83,12 +89,16 @@ export const QuestionSchema = z.object({
   range: z.string().optional(),
   lowerLabel: z.string().optional(),
   upperLabel: z.string().optional(),
+  matrixRows: z.array(QuestionMatrixGridSchema).optional(),
+  matrixColumns: z.array(QuestionMatrixGridSchema).optional(),
 });
 
 export const QuestionAnswerSchema = z
   .object({
     question: QuestionSchema,
-    answer: z.union([z.string(), z.array(z.string())]).optional(),
+    answer: z
+      .union([z.string(), z.array(z.string()), z.record(z.string(), z.string().nullable())])
+      .optional(),
   })
   .superRefine(({ question, answer }, ctx) => {
     if (
@@ -98,8 +108,24 @@ export const QuestionAnswerSchema = z
       return;
     }
 
-    if (question.required && (!answer || !answer.length)) {
-      ctx.addIssue({
+    if (
+      question.required &&
+      question.type === QUESTION_TYPE_ENUM.MATRIX &&
+      Object.values(answer || {}).every((value) => !value)
+    ) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: i18next.t('errors.required'),
+        path: ['answer'],
+      });
+    }
+
+    if (
+      question.required &&
+      question.type !== QUESTION_TYPE_ENUM.MATRIX &&
+      (!answer || !answer.length)
+    ) {
+      return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: i18next.t('errors.required'),
         path: ['answer'],
@@ -111,3 +137,4 @@ export type QuestionLogic = z.infer<typeof QuestionLogicSchema>;
 export type QuestionOption = z.infer<typeof QuestionOptionSchema>;
 export type Question = z.infer<typeof QuestionSchema>;
 export type QuestionAnswer = z.infer<typeof QuestionAnswerSchema>;
+export type QuestionMatrixGrid = z.infer<typeof QuestionMatrixGridSchema>;

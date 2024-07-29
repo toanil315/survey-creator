@@ -20,6 +20,7 @@ import { mergeClasses } from '@fluentui/react-components';
 import { FileUploadForm } from './components/Forms/FileUploadForm';
 import { PictureSelectionForm } from './components/Forms/PictureSelectionForm';
 import { RatingForm } from './components/Forms/RatingForm';
+import { MatrixForm } from './components/Forms/MatrixForm';
 
 export const QuestionCard = memo(
   ({ question }: QuestionCardProps) => {
@@ -135,6 +136,10 @@ export const QuestionFormFactory = ({ question }: QuestionCardProps) => {
 
     case QUESTION_TYPE_ENUM.RATING: {
       return <RatingForm />;
+    }
+
+    case QUESTION_TYPE_ENUM.MATRIX: {
+      return <MatrixForm />;
     }
   }
 };

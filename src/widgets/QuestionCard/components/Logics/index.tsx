@@ -85,6 +85,11 @@ export const QuestionLogicJump = () => {
                 const shouldEnableMultipleSelect =
                   condition === LOGIC_CONDITION_ENUM.INCLUDES_ALL_OF ||
                   condition === LOGIC_CONDITION_ENUM.INCLUDES_ONE_OF;
+                const shouldDisabledValueField = [
+                  LOGIC_CONDITION_ENUM.IS_SUBMITTED,
+                  LOGIC_CONDITION_ENUM.IS_COMPLETELY_SUBMITTED,
+                  LOGIC_CONDITION_ENUM.IS_PARTIALLY_SUBMITTED,
+                ].includes(condition);
 
                 return (
                   <div key={field.id}>
@@ -119,9 +124,7 @@ export const QuestionLogicJump = () => {
                             value,
                           };
                         })}
-                        disabled={
-                          watch(`logics.${index}.condition`) === LOGIC_CONDITION_ENUM.IS_SUBMITTED
-                        }
+                        disabled={shouldDisabledValueField}
                         multiselect={shouldEnableMultipleSelect}
                       />
                     </div>

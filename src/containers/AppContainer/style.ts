@@ -3,6 +3,7 @@ import { makeResetStyles, shorthands, tokens } from '@fluentui/react-components'
 export const useAppLayoutBaseClassName = makeResetStyles({
   display: 'flex',
   flexFlow: 'row nowrap',
+  gap: tokens.spacingHorizontalXXL,
 
   width: '100%',
 
@@ -12,6 +13,7 @@ export const useAppLayoutBaseClassName = makeResetStyles({
 
   '& .preview': {
     ...shorthands.padding(tokens.spacingHorizontalXXL, tokens.spacingHorizontalXXL),
+    ...shorthands.borderLeft('1px', 'solid', tokens.colorNeutralBackground3),
   },
 });
 
