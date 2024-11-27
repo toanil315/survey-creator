@@ -1,6 +1,6 @@
 import { makeResetStyles, shorthands, tokens } from '@fluentui/react-components';
 
-export const useAppLayoutBaseClassName = makeResetStyles({
+export const useSurveyLayoutBaseClassName = makeResetStyles({
   display: 'flex',
   flexFlow: 'row nowrap',
   gap: tokens.spacingHorizontalXXL,
