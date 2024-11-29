@@ -1,11 +1,11 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import {   defineConfig } from 'vite';
 import * as path from "path";
-import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
+import { reactRouter } from "@react-router/dev/vite";
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), TanStackRouterVite()],
+  plugins: [reactRouter(), tsconfigPaths()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -14,4 +14,11 @@ export default defineConfig({
   server: {
     port: 3001
   },
+  ssr: {
+    noExternal: [
+      /@fluentui|@swc|@floating-ui/ ,
+      '@griffel/react',
+    ],
+  },
+  
 });
