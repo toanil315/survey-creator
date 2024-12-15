@@ -5,6 +5,7 @@ import { FluentProvider } from '@fluentui/react-components';
 import { lightTheme } from './styles/theme';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
+import { useEffect } from 'react';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,10 +38,27 @@ export default function Root() {
     createProviderConfig(I18nextProvider, { i18n: i18n }),
   ];
 
+  useEffect(() => {
+    const tourScript = document.createElement('script');
+    tourScript.src = './tour-script/index.js';
+    document.body.appendChild(tourScript);
+    tourScript.onload = () => {
+      (window as any).initTourConnection('app');
+    };
+
+    const tourStyles = document.createElement('link');
+    tourStyles.href = './tour-script/index.css';
+    tourStyles.rel = 'stylesheet';
+    tourStyles.type = 'text/css';
+    document.body.appendChild(tourStyles);
+  }, []);
+
   return (
-    <ProviderTree providers={providersAndConfigs}>
-      <Outlet />
-    </ProviderTree>
+    <div id='app'>
+      <ProviderTree providers={providersAndConfigs}>
+        <Outlet />
+      </ProviderTree>
+    </div>
   );
   return;
 }
