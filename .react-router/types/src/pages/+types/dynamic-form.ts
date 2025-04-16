@@ -1,17 +1,17 @@
 // React Router generated types for route:
-// pages/about.tsx
+// pages/dynamic-form.tsx
 
 import type * as T from "react-router/route-module"
 
 import type { Info as Parent0 } from "../../+types/root"
 
-type Module = typeof import("../about")
+type Module = typeof import("../dynamic-form")
 
 export type Info = {
   parents: [Parent0],
-  id: "pages/about"
-  file: "pages/about.tsx"
-  path: "about"
+  id: "pages/dynamic-form"
+  file: "pages/dynamic-form.tsx"
+  path: "dynamic-form"
   params: {}
   module: Module
   loaderData: T.CreateLoaderData<Module>
