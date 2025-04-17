@@ -1,11 +1,12 @@
-import { ConditionOperator, LogicalOperator } from '@/constants';
+import { LogicalOperator } from '@/constants';
 import { ConditionTree } from '@/entities/field';
 import { useFormContext } from 'react-hook-form';
 import { ConditionForm } from './ConditionForm';
 import { mergeClasses } from '@fluentui/react-components';
 import { useFieldFormContainerBaseClassName, useFieldFormContainerClassNames } from '../../style';
-import { Button, CategoryIcon, LogicJumpIcon } from '@/components';
+import { Button, CategoryIcon, LogicJumpIcon, OverflowMenu } from '@/components';
 import { useLogicalGroupBorderBaseClassName } from './style';
+import { useQuestionFormContext } from '@/components/QuestionForm/QuestionFormContext';
 
 export const LogicalGroup: React.FC<{ path: string }> = ({ path }) => {
   const fieldFormContainerClassNames = useFieldFormContainerClassNames();
@@ -13,6 +14,7 @@ export const LogicalGroup: React.FC<{ path: string }> = ({ path }) => {
   const logicalBorderBaseClassName = useLogicalGroupBorderBaseClassName();
 
   const { getValues, setValue, watch } = useFormContext();
+  const { onSubmit } = useQuestionFormContext();
   const value = watch(path);
   const op = LogicalOperator.And in value ? LogicalOperator.And : LogicalOperator.Or;
   const children: ConditionTree[] = value[op];
@@ -20,10 +22,7 @@ export const LogicalGroup: React.FC<{ path: string }> = ({ path }) => {
   const handleAddCondition = () => {
     const newPath = `${path}.${op}`;
     const current = getValues(newPath) || [];
-    setValue(newPath, [
-      ...current,
-      { id: String(Date.now()), field: '', operator: ConditionOperator.Equals, value: '' },
-    ]);
+    setValue(newPath, [...current, { id: String(Date.now()), field: '', operator: '', value: '' }]);
   };
 
   const handleAddGroup = () => {
@@ -32,12 +31,38 @@ export const LogicalGroup: React.FC<{ path: string }> = ({ path }) => {
     setValue(newPath, [...current, { [LogicalOperator.And]: [] }]);
   };
 
+  const handleChangeCondition = (logicalOperator: LogicalOperator) => () => {
+    const currentPath = `${path}.${op}`;
+    const currentContent = JSON.parse(JSON.stringify(getValues(currentPath) || []));
+    setValue(path, { [logicalOperator]: currentContent });
+    onSubmit && onSubmit({} as any);
+  };
+
   return (
     <div
       className={mergeClasses(fieldFormContainerBaseClassName, fieldFormContainerClassNames.row)}
     >
       <div className={logicalBorderBaseClassName}>
-        <span>{op}</span>
+        <OverflowMenu
+          items={[
+            {
+              label: (
+                <div onClick={handleChangeCondition(LogicalOperator.And)}>
+                  {LogicalOperator.And}
+                </div>
+              ),
+              key: LogicalOperator.And,
+            },
+            {
+              label: (
+                <div onClick={handleChangeCondition(LogicalOperator.Or)}>{LogicalOperator.Or}</div>
+              ),
+              key: LogicalOperator.Or,
+            },
+          ]}
+        >
+          <span>{op}</span>
+        </OverflowMenu>
       </div>
       <div
         className={mergeClasses(
@@ -50,6 +75,7 @@ export const LogicalGroup: React.FC<{ path: string }> = ({ path }) => {
           if ('id' in child) {
             return (
               <ConditionForm
+                conditionId={child.id}
                 key={childPath}
                 path={childPath}
               />

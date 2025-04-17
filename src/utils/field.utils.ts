@@ -30,22 +30,21 @@ export class FieldUtils {
       case ConditionOperator.Includes:
         return (Array.isArray(actual) || typeof actual === 'string') && actual.includes(expected);
       case ConditionOperator.NotIncludes:
-        console.log(
-          cond,
-          (Array.isArray(actual) || typeof actual === 'string') && !actual.includes(expected),
-        );
         return (Array.isArray(actual) || typeof actual === 'string') && !actual.includes(expected);
     }
   }
 
   static evaluateFieldVisibility(
     context: Record<string, string | number | unknown[]>,
-    field: FieldConfig,
+    field: Field,
   ): boolean {
+    if (!field.visibilityLogic || !field.visibilityLogic.length) return true;
+
     const { conditions, visibilityLogic } = field;
+    const conditionsArray = Object.values(conditions);
 
     const conditionValuesMap = new Map<string, boolean>();
-    for (const condition of conditions) {
+    for (const condition of conditionsArray) {
       conditionValuesMap.set(condition.id, this.evaluateCondition(context, condition));
     }
 
@@ -94,7 +93,7 @@ export class FieldUtils {
 
     for (const token of logic) {
       // If token is condition operator, pull 2 item from stack and compute, then push back to stack.
-      if (token === 'AND' || token === 'OR') {
+      if (token === LogicalOperator.And || token === LogicalOperator.Or) {
         const firstCondition = stack.pop();
         const secondCondition = stack.pop();
 
@@ -104,17 +103,10 @@ export class FieldUtils {
         }
 
         stack.push(
-          token === 'AND' ? firstCondition && secondCondition : firstCondition || secondCondition,
+          token === LogicalOperator.And
+            ? firstCondition && secondCondition
+            : firstCondition || secondCondition,
         );
-      } else if (token === 'NOT') {
-        const firstCondition = stack.pop();
-
-        if (firstCondition === undefined) {
-          console.warn('Invalid logic stack', stack);
-          return false;
-        }
-
-        stack.push(!firstCondition);
       } else {
         // If token is id of condition, push away to stack
         if (!conditionalValues.has(token)) stack.push(false);
@@ -137,6 +129,7 @@ export class FieldUtils {
           conditionTree: {
             [LogicalOperator.And]: [],
           },
+          conditions: {},
         };
 
       case FIELD_TYPE_ENUM.SINGLE_SELECT:
@@ -152,11 +145,12 @@ export class FieldUtils {
           conditionTree: {
             [LogicalOperator.And]: [],
           },
+          conditions: {},
         };
     }
   }
 
-  static toRPN(node: ConditionTree): string[] {
+  static convertConditionTreeToRPN(node: ConditionTree): string[] {
     if (!(node as LogicalNode)[LogicalOperator.And] && !(node as LogicalNode)[LogicalOperator.Or]) {
       return [(node as ConditionNode).id];
     }
@@ -170,7 +164,7 @@ export class FieldUtils {
     const rpn: string[] = [];
 
     for (const child of children) {
-      rpn.push(...this.toRPN(child));
+      rpn.push(...this.convertConditionTreeToRPN(child));
     }
 
     // add operator n - 1 times

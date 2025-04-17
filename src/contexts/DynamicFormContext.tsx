@@ -25,6 +25,7 @@ export const DynamicFormProvider = ({ children }: { children: React.ReactNode })
   };
 
   const updateField = (field: Field) => {
+    field.visibilityLogic = FieldUtils.convertConditionTreeToRPN(field.conditionTree);
     const updatedFields = fields.map((f) => (f.id === field.id ? { ...f, ...field } : f));
     setFields(updatedFields);
   };

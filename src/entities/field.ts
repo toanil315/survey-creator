@@ -86,8 +86,9 @@ export const FieldSchema = z.object({
   required: z.boolean().optional(),
   options: z.array(FieldOptionSchema).default([]),
   conditionTree: ConditionTreeSchema,
+  visibilityLogic: z.array(z.string()).optional().default([]),
 });
 
 export type FieldOption = z.infer<typeof FieldOptionSchema>;
-export type Field = z.infer<typeof FieldSchema>;
 export type ConditionNode = z.infer<typeof ConditionNodeSchema>;
+export type Field = z.infer<typeof FieldSchema> & { conditions: Record<string, ConditionNode> };

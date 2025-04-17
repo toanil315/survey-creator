@@ -73,16 +73,20 @@ export const useLogicalGroupBorderBaseClassName = makeResetStyles({
   ...shorthands.borderTop('1px', 'solid', tokens.colorBrandBackground),
   borderRadius: tokens.borderRadiusSmall,
 
-  '& span': {
+  '& > div > span': {
     position: 'absolute',
+    zIndex: 99,
+
     top: '50%',
     transform: 'translate(-50%, -50%)',
     ...shorthands.padding('1px', tokens.spacingHorizontalSNudge),
 
     fontSize: tokens.fontSizeBase100,
-    fontWeight: tokens.fontWeightMedium,
+    fontWeight: tokens.fontWeightSemibold,
     background: tokens.colorNeutralBackground2,
     ...shorthands.border('1px', 'solid', tokens.colorNeutralBackground5),
     borderRadius: tokens.borderRadiusSmall,
+
+    cursor: 'pointer',
   },
 });
