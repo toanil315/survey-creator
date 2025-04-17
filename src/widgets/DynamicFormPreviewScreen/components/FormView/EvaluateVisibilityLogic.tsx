@@ -14,7 +14,5 @@ export const EvaluateVisibilityLogic = ({ fieldId, children }: Props) => {
   const { fields } = useDynamicForm();
   const currentField = fields.find((f) => f.id === fieldId);
 
-  console.log('currentField?.visibilityLogic: ', currentField?.visibilityLogic);
-
   return FieldUtils.evaluateFieldVisibility(formAnswers, currentField!) && children;
 };

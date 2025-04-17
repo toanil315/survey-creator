@@ -85,7 +85,12 @@ export const FormView = () => {
         noValidate
         formId='1'
       >
-        <Row gutter={[16, 16]}>{renderFields()}</Row>
+        <Row
+          style={{ alignItems: 'baseline' }}
+          gutter={[16, 16]}
+        >
+          {renderFields()}
+        </Row>
       </QuestionForm>
     </FormProvider>
   );
